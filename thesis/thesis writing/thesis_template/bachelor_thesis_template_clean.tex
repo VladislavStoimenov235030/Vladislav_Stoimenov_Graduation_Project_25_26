@@ -1711,6 +1711,26 @@ data-retention policy for this data; no such policy is currently
 implemented, since it was out of scope for a local, single-user
 prototype.
 
+Because both manually collected photograph sets
+(Section~\ref{sec:method-manual-collection}) were captured in Sofia,
+Bulgaria, an EU member state, the General Data Protection Regulation
+(GDPR) applies to any personal data they contain. GPS coordinates and
+photographs that may incidentally show identifiable people or licence
+plates (Section~\ref{sec:ethics-privacy}) both qualify as personal data
+under GDPR Article 4(1). The current prototype does not implement a
+GDPR-compliant workflow: no lawful basis for processing incidentally
+captured third parties' data has been documented, no privacy notice was
+provided to anyone photographed, and there is no mechanism for a data
+subject to request access to or erasure of their data (Articles 15 and
+17). These gaps are acceptable for a local, single-user academic
+prototype evaluated by the author and a small number of usability-study
+participants, none of whose own images were processed, but any
+deployment beyond this stage -- particularly one operated by a
+municipality -- would need a documented lawful basis (most plausibly
+\emph{public task}, Article 6(1)(e), for a public authority), a privacy
+notice, a defined retention schedule, and a working data-subject-request
+process before processing real residents' images and locations.
+
 \subsection{Dataset licensing and attribution}
 \label{sec:ethics-licensing}
 
