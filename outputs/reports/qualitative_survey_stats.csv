@@ -1,0 +1,6 @@
+question,n,mean,median,min,max
+Detection results easy to understand,10,4.2,4.0,4,5
+Risk score/category intuitive,10,4.6,5.0,4,5
+Map made risky roads clear,10,4.6,5.0,4,5
+Trust the risk assessment,10,3.8,4.0,3,5
+Route comparison useful,10,4.4,4.0,4,5

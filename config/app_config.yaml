@@ -1,0 +1,59 @@
+# Application-level configuration: paths, model, and the geospatial pilot
+# area. Kept separate from risk_weights.yaml so risk-scoring tuning and
+# infrastructure/deployment settings don't get mixed together.
+
+model:
+  # YOLOv8n trained on the class/country-balanced RDD2022 "large" dataset
+  # (4,291 train images), then fine-tuned on 131 real Sofia photos -- the
+  # domain-adaptation stage that made this the right model for the actual
+  # deployment area, not just the strongest model on the RDD2022 benchmark.
+  # On RDD2022-large's own test set the pre-fine-tune model scores higher
+  # (mAP50-95 0.300), but on real Sofia photos (this app's only actual use
+  # case) the fine-tuned model is far better: mAP50-95 0.148 vs 0.041,
+  # F1 0.347 vs 0.189 -- see thesis/model_training_results_and_discussion.md
+  # section 4 for the full before/after comparison and domain-gap discussion.
+  # Committed to git (unlike the training-run output it was copied from
+  # under notebooks/runs/, which is git-ignored) so the app has a working
+  # detector out of the box without needing to retrain. Faster R-CNN's
+  # checkpoints stay git-ignored -- they're a research comparison artifact,
+  # not used by the app, and far too large (~170MB each) to be worth it.
+  path: models/yolov8n_sofia_finetune/best.pt
+  version_label: yolov8n_large_sofia_finetuned_v1  # stored per-observation for reproducibility
+  default_confidence_threshold: 0.25
+  min_confidence_threshold: 0.10
+  max_confidence_threshold: 0.90
+
+# Maps the model's raw training-data class names (from the RDD2022 data.yaml,
+# which uses the official RDD2022 damage codes -- kept as-is, not renamed,
+# since that's the dataset's own definition) to a professional display name
+# shown everywhere in the app/UI/exports. Translation happens once, at
+# src/detection/detector.py, so every downstream module (risk scoring,
+# annotated images, map popups, tables, database) already sees the clean
+# name -- there's no separate "internal" vs "display" name to keep in sync.
+damage_class_display_names:
+  D00_Longitudinal_Crack: Longitudinal Crack
+  D10_Transverse_Crack: Transverse Crack
+  D20_Alligator_Crack: Alligator Crack
+  D40_Pothole: Pothole
+
+# Geospatial pilot area. Scope decision (agreed with project owner): the
+# routing/geospatial demo targets Sofia only, since the product is framed
+# as a municipality tool -- not all of Bulgaria.
+pilot_area:
+  name: Sofia, Bulgaria
+  center_lat: 42.6977
+  center_lon: 23.3219
+  radius_m: 8000
+  network_type: drive
+
+# Maximum distance (meters) between an observation's GPS point and its
+# nearest matched road edge before it's flagged for manual review instead
+# of silently assigned to a possibly-wrong street.
+max_matching_distance_m: 50
+
+paths:
+  database: outputs/app/app.db
+  uploads: data/uploads
+  annotated_images: outputs/app/annotated
+  graph_cache: outputs/geo/sofia_drive_network.graphml
+  exports: outputs/app/exports

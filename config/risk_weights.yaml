@@ -1,0 +1,58 @@
+# Risk-scoring configuration.
+#
+# Single source of truth for every numeric weight used by src/risk/*.
+# Kept here (rather than scattered in code) so the Streamlit app, thesis
+# report, and evaluation scripts all read the exact same values, and so a
+# parameter can be tuned without touching code.
+#
+# Design reasoning for each value is documented in the modules that consume
+# it (src/risk/scoring.py, src/risk/combine.py, src/routing/router.py) --
+# this file only holds the numbers themselves.
+
+# Base severity per damage class -- fixed hazard-mechanism weight, NOT
+# scaled by detected bounding-box size (bbox area depends on camera
+# distance, not real-world damage size -- deliberate project decision).
+# Keys are the display names (config/app_config.yaml:
+# damage_class_display_names) -- the same names src.detection.detector
+# hands back on every Detection, so this matches downstream lookups.
+base_severity:
+  Longitudinal Crack: 1.0
+  Transverse Crack: 1.2
+  Alligator Crack: 2.0
+  Pothole: 3.0
+
+# Confidence multiplier range applied on top of base severity. A detection
+# right at the inference confidence threshold still counts as trusted --
+# it should not be scored as if it were barely dangerous.
+confidence_floor: 0.7
+confidence_threshold: 0.25  # must match app_config.yaml's default_confidence_threshold
+
+# Damping factor for the "max + damped extra" aggregation used both at
+# image level (src/risk/observation_risk.py) and segment level
+# (src/risk/segment_aggregation.py): risk = max(risks) + beta * sum(rest).
+# The single worst hazard dominates; additional co-occurring damage still
+# adds to the score but doesn't overwhelm it.
+beta: 0.3
+
+# Normalization ceiling for the 0-1 observation_risk score (spec: image-
+# level risk must be normalized to [0, 1]). One full-confidence pothole
+# alone should already saturate risk, hence the ceiling equals the highest
+# base_severity value.
+observation_risk_max: 3.0
+
+# Risk category thresholds, applied to the normalized [0, 1] observation
+# score. Evenly split into thirds as a simple, explainable starting point --
+# tune once H2 evaluation data (manual risk labels) is available.
+risk_categories:
+  low_max: 0.34    # score < 0.34  -> low
+  medium_max: 0.67  # 0.34 <= score < 0.67 -> medium
+                     # score >= 0.67 -> high
+
+# Routing risk-aware edge cost: risk_cost = length_m + alpha * risk_density.
+# alpha=15000 was found empirically against the real Sofia pilot data: below
+# it, the risk-aware route still cuts through the single highest-risk known
+# segment because the distance penalty doesn't outweigh detouring; at this
+# value it becomes worthwhile. Not a calibrated safety threshold -- exposed
+# here so it stays adjustable (e.g. a future Streamlit slider) without a
+# code change.
+routing_alpha: 15000

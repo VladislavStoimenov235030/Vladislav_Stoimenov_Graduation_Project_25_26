@@ -1,0 +1,172 @@
+GPU_mem
+1.16G
+
+How much GPU memory is being used.
+
+Your model is only using around 1.1–1.3 GB, so your GPU is handling this training easily.
+
+box_loss
+
+This is the bounding box loss.
+
+It measures how bad the predicted box positions are compared to the real boxes.
+
+Lower is better.
+
+So:
+
+epoch 1: 2.432
+epoch 4: 2.274
+
+This is slowly improving.
+
+cls_loss
+
+This is classification loss.
+
+It measures how bad the model is at predicting the correct damage class.
+
+For example:
+
+D00 vs D10 vs D20 vs D40
+
+Lower is better.
+
+Your cls_loss is dropping:
+
+epoch 1: 4.332
+epoch 2: 3.888
+epoch 3: 3.554
+epoch 4: 3.521
+
+That is good. It means the model is starting to learn the classes.
+
+dfl_loss
+
+This is Distribution Focal Loss.
+
+In simple words, it is another bounding-box quality loss. It helps YOLO make more precise box boundaries.
+
+Lower is better.
+
+Your values are around:
+
+2.22 → 2.05 → 2.00 → 2.06
+
+That is still normal for the first few epochs.
+
+Instances
+
+This is how many damage objects/bounding boxes were in the current training batch.
+
+For example:
+
+22
+8
+20
+19
+
+It changes because each batch contains different images, and every image can have a different number of damages.
+
+Size
+640
+
+This is the image size used for training.
+
+You set:
+
+imgsz=640
+
+So YOLO resizes images to 640 during training.
+
+2. Validation row
+
+Example:
+
+Class   Images   Instances   Box(P)   R      mAP50   mAP50-95
+all     60       161         0.233    0.149  0.052   0.0217
+
+This is the important part for evaluation.
+
+YOLO is testing the model on your validation set, not training set. Ultralytics uses precision, recall, mAP50, and mAP50-95 as core object-detection validation metrics.
+
+Class
+all
+
+This means the metric is averaged over all classes.
+
+Later YOLO may also print separate rows for each class.
+
+Images
+60
+
+This means the validation set contains 60 images.
+
+Instances
+161
+
+This means those 60 validation images contain 161 total labeled damage objects.
+
+So one image can contain more than one damage.
+
+Box(P) / Precision
+
+Precision means:
+
+Of all boxes the model predicted, how many were actually correct?
+
+High precision = fewer false detections.
+
+Example:
+
+Box(P) = 0.233
+
+This means around 23.3% of predicted detections were correct.
+
+Low precision means the model is producing many wrong detections.
+
+R / Recall
+
+Recall means:
+
+Of all real damage objects, how many did the model find?
+
+High recall = fewer missed damages.
+
+Example:
+
+R = 0.149
+
+This means the model found around 14.9% of the real damage objects.
+
+Low recall means the model is missing many damages.
+
+mAP50
+
+This means mean Average Precision at IoU threshold 0.50.
+
+In simple words:
+
+How good are the detections if predicted boxes need to overlap real boxes by at least 50%?
+
+Higher is better.
+
+Example:
+
+mAP50 = 0.052
+
+That means performance is still low, but this is normal in the first few epochs, especially with a small dataset.
+
+mAP50-95
+
+This is stricter than mAP50.
+
+It averages performance across multiple IoU thresholds from 0.50 to 0.95.
+
+So it checks not only whether the model roughly finds the damage, but also whether the box is very accurately placed.
+
+Example:
+
+mAP50-95 = 0.0217
+
+This will usually be much lower than mAP50.

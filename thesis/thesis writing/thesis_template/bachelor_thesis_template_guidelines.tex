@@ -1,0 +1,784 @@
+% ============================================================================
+%  BUAS BACHELOR'S THESIS TEMPLATE
+%  Academy of Games and Media — Data Science & AI
+%  
+%
+%  INSTRUCTIONS:
+%  1. Replace all placeholder text (marked with <<<...>>>) with your content
+%  2. Read the guidance in the teal boxes for section-specific advice
+%  3. Read the grey comment blocks for formatting and style tips
+%  4. Delete ALL \guidancebox and \stylenote environments before submission
+%  5. Compile with: pdflatex thesis.tex && bibtex thesis && pdflatex thesis.tex && pdflatex thesis.tex
+%
+%  Academic Year 2025-2026
+% ============================================================================
+
+\documentclass[12pt,a4paper,twocolumn]{article}
+
+% ── Page geometry ────────────────────────────────────────────────────────
+% A4 paper, with 25mm margins on all sides. The title, subtitle, author
+% information, and abstract are presented in a single column, while the
+% main text is formatted in two columns. Each column is 77mm wide, with
+% 6mm of space between them.
+\usepackage[
+  a4paper,
+  left=25mm,
+  right=25mm,
+  top=25mm,
+  bottom=25mm,
+  columnsep=6mm
+]{geometry}
+
+% ── Fonts ────────────────────────────────────────────────────────────────
+% The font should be Palatino Linotype (Regular), or a similar font
+% (e.g. Computer Modern in LaTeX). Times Roman and Georgia are NOT
+% recommended, as they are less suitable for long academic texts.
+% Use 10pt font with single line spacing.
+% Use bold only for subheadings. Use italics for emphasis, foreign words
+% (except commonplace terms), Latin abbreviations, and newly introduced
+% terminology. NEVER use underlining — it belongs to the era of typewriters.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}             % Palatino text + math
+\usepackage{microtype}            % Improved typographic quality
+\linespread{1.0}                  % Single line spacing
+
+% ── Essential packages ───────────────────────────────────────────────────
+\usepackage{amsmath,amssymb}      % Mathematics
+\usepackage{graphicx}             % Images
+\usepackage{booktabs}             % Professional tables (\toprule, \midrule, \bottomrule)
+\usepackage{caption}              % Caption formatting
+\usepackage{float}                % Improved float placement
+\usepackage{enumitem}             % List customization
+\usepackage{url}                  % URL formatting
+\usepackage{algorithm2e}          % Pseudo code
+\usepackage{xcolor}               % Colours
+\usepackage{fancyhdr}             % Headers and footers
+\usepackage{titlesec}             % Section heading formatting
+\usepackage{natbib}               % APA-style citations
+\usepackage{hyperref}             % Clickable links (load last)
+
+% ── Colour definitions (BUas palette) ────────────────────────────────────
+\definecolor{buasnavy}{HTML}{0F2A44}
+\definecolor{buasteal}{HTML}{0D7377}
+\definecolor{buasgold}{HTML}{E8A838}
+\definecolor{buascream}{HTML}{F7F3ED}
+\definecolor{guidegray}{HTML}{5D6D7E}
+\definecolor{guideboxbg}{HTML}{E8F6F6}
+\definecolor{styleboxbg}{HTML}{F5F5F0}
+\definecolor{warnred}{HTML}{C0392B}
+
+% ── Hyperlink styling ────────────────────────────────────────────────────
+\hypersetup{
+  colorlinks=true,
+  linkcolor=buasnavy,
+  citecolor=buasteal,
+  urlcolor=buasteal,
+  pdfauthor={<<<Your Name>>>},
+  pdftitle={<<<Title of Your Thesis>>>},
+}
+
+% ── Caption formatting ───────────────────────────────────────────────────
+% Figures: caption BELOW in 9pt bold — "Figure X.Y: Description"
+% Tables: caption ABOVE in 9pt bold — "Table X.Y: Description"
+% Leave 6pt between caption and content.
+\captionsetup{
+  font={bf,small},
+  labelsep=colon,
+  skip=6pt,
+}
+\captionsetup[table]{position=above}
+\captionsetup[figure]{position=below}
+
+% ── Section heading formatting ───────────────────────────────────────────
+% Level 1: 12pt bold, 12pt space before, 3pt after. Arabic numerals (1, 2, 3).
+% Level 2: 10pt bold, 12pt space before, 3pt after. Double numbers (1.1, 1.2).
+% Subheadings begin with a capital letter but contain no additional capitals.
+% They do not end with a full stop. Use a maximum of two levels in a short text.
+\titleformat{\section}
+  {\normalfont\fontsize{12}{14}\bfseries}{\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{12pt}{3pt}
+
+\titleformat{\subsection}
+  {\normalfont\fontsize{10}{12}\bfseries}{\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{12pt}{3pt}
+
+% ── Page numbering ───────────────────────────────────────────────────────
+% Page numbers appear at the bottom right of the page, 10mm below the text.
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% ── Paragraph formatting ─────────────────────────────────────────────────
+% Paragraphs should be justified. Words may be hyphenated.
+% Do not indent the first paragraph of a section. Subsequent paragraphs
+% should have a 6mm first-line indent.
+\setlength{\parindent}{6mm}
+\setlength{\parskip}{0pt}
+
+% ── Algorithm styling ────────────────────────────────────────────────────
+% Pseudo code at 9pt. Variables in italics, control words (if, then, while)
+% in boldface, function names in small caps. Use line numbers if you
+% reference specific lines. Blocks indented, closed with end for, etc.
+% Caption ABOVE the code: "Algorithm X.Y: description" in 9pt bold.
+\SetAlgorithmName{Algorithm}{Algorithm}{List of Algorithms}
+\SetAlgoLined
+\SetKwComment{Comment}{/* }{ */}
+
+% ── Guidance box environments ────────────────────────────────────────────
+% TEAL BOXES: Section-specific writing guidance (what to write).
+% GREY BOXES: Style and formatting notes (how to write and format).
+% >>> DELETE ALL OF THESE BEFORE FINAL SUBMISSION <<<
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable}
+
+% Content guidance (teal)
+\newtcolorbox{guidancebox}[1][]{
+  colback=guideboxbg,
+  colframe=buasteal,
+  fonttitle=\bfseries\small\color{buasteal},
+  title={Writing Guidance — Delete before submission},
+  coltitle=buasteal,
+  boxrule=0.5pt,
+  arc=2pt,
+  left=4pt, right=4pt, top=4pt, bottom=4pt,
+  fontupper=\small\color{guidegray},
+  breakable,
+  before skip=6pt, after skip=6pt,
+  #1
+}
+
+% Style/formatting notes (grey)
+\newtcolorbox{stylenote}[1][]{
+  colback=styleboxbg,
+  colframe=guidegray,
+  fonttitle=\bfseries\small\color{guidegray},
+  title={Style \& Formatting Note — Delete before submission},
+  coltitle=guidegray,
+  boxrule=0.5pt,
+  arc=2pt,
+  left=4pt, right=4pt, top=4pt, bottom=4pt,
+  fontupper=\small\color{guidegray},
+  breakable,
+  before skip=6pt, after skip=6pt,
+  #1
+}
+
+% ════════════════════════════════════════════════════════════════════════════
+%  DOCUMENT BEGINS
+% ════════════════════════════════════════════════════════════════════════════
+\begin{document}
+
+% ── Title block (single column, full width) ──────────────────────────────
+% The title, subtitle, author information, and abstract span the full page width.
+\twocolumn[
+  \begin{@twocolumnfalse}
+
+  % ── University / programme header ──────────────────────────────────────
+  \begin{center}
+    {\small\color{guidegray}
+      Breda University of Applied Sciences \hspace{1em}$\mid$\hspace{1em}
+      Academy of Games and Media \hspace{1em}$\mid$\hspace{1em}
+      Data Science \& AI}
+    \vspace{12pt}
+
+    % ── Title ────────────────────────────────────────────────────────────
+    % 16pt bold, small caps for lowercase letters. Content words begin
+    % with a capital letter ('title caps'). Leave 3pt below the title.
+    {\fontsize{16}{19}\bfseries\scshape
+      <<<Title of Your Thesis Project>>>
+    \par}
+    \vspace{3pt}
+
+    {\normalsize Bachelor's Thesis}
+    \vspace{6pt}
+
+    % ── Author information ───────────────────────────────────────────────
+    % Name, student number, email. Remove the student number from the
+    % final version you upload to the repository.
+    {\normalsize
+      <<<Your Name>>>, <<<Student Number>>>, <<<your.email@buas.nl>>>}
+    \vspace{2pt}
+
+    {\normalsize
+      Supervisors: <<<First Supervisor>>> \& <<<Second Supervisor>>>}
+    \vspace{12pt}
+
+    % ── Abstract ─────────────────────────────────────────────────────────
+    % 9pt font, single column across the full page, with a 6mm indent on both
+    % sides. Maximum 250 words. Begins with "Abstract:" in bold.
+    % The abstract is separate from the rest of the text — the main text
+    % should be understandable without first reading the abstract.
+    \begin{minipage}{0.92\textwidth}
+      \small
+      \setlength{\parindent}{6mm}
+
+      \textbf{Abstract:}
+      <<<Write your abstract here. Maximum 250 words. The abstract serves as
+      the ``teaser'' of your thesis. On the basis of the abstract, readers
+      decide whether the rest of the thesis is worth reading. In many
+      databases, the abstract is the only freely available part.
+
+      The abstract MUST include: (1)~the research problem and its context,
+      (2)~your approach or method, (3)~the key findings and quantitative
+      results, and (4)~the main conclusions.  It should provide a complete picture of what was done and what can be concluded from it.
+
+      The abstract must be readable as a stand-alone text: do not refer to
+      sections, figures, or tables. Write the abstract LAST, once your
+      results and conclusions are clear.>>>
+
+    \end{minipage}
+
+    \vspace{6pt}
+  \end{center}
+
+  \end{@twocolumnfalse}
+]
+
+% ════════════════════════════════════════════════════════════════════════════
+%  SECTION 1: INTRODUCTION
+% ════════════════════════════════════════════════════════════════════════════
+\section{Introduction}
+\label{sec:introduction}
+
+\begin{guidancebox}
+\textbf{Purpose:} The introduction and conclusion together should provide a
+\emph{complete and comprehensible} picture of your thesis. This is intended
+for time-poor readers whose interest has been raised by the abstract but
+who do not have time to read the full thesis.
+
+\textbf{Your introduction must:}
+\begin{itemize}[leftmargin=*, nosep]
+  \item Set out the \textbf{context} of the work: why it is relevant and
+    who has previously worked on the topic.
+  \item State the \textbf{specific research question}, and explain how it
+    contributes to a better understanding of the subject.
+  \item Provide a \textbf{summary of the techniques and analysis methods}
+    used (details are given in the Methodology section).
+  \item \textbf{Convince the reader} that your work is useful and
+    interesting, that you understand the subject well, and that you have
+    chosen an appropriate way to investigate it.
+\end{itemize}
+
+
+
+\textbf{Delete this box before submission.}
+\end{guidancebox}
+
+\begin{stylenote}
+\textbf{Before you start writing}, answer these four questions:
+\begin{enumerate}[leftmargin=*, nosep]
+  \item \textbf{What is the aim?} Are you reporting on a project and its
+    results? Presenting a new idea? Proposing a solution? For a BSc thesis,
+    the aim is usually to report on a research project and present your findings.
+  \item \textbf{Who is your audience?} Your supervisor, industry readers,
+    and fellow researchers are the primary audience. They are knowledgeable
+    but critical. Do not over-explain basic concepts, but substantiate every claim.
+  \item \textbf{What is the format?} A BSc thesis is typically 10--15 pages
+    (excluding references and appendices). This is closer to a conference paper than to a
+    journal article, so scope your depth and level of detail accordingly.
+  \item \textbf{What is your contribution?} State your specific
+    contribution clearly: what message are you trying to convey? What can
+    you assume is already known, and what background do you need to provide?
+\end{enumerate}
+
+\textbf{Tip:} Prepare a detailed table of contents before you begin writing
+chapters and sections, and add a brief description of each. This helps
+prevent structural problems later.
+
+\textbf{Delete this box before submission.}
+\end{stylenote}
+
+\noindent
+<<<Write your introduction here. Start by establishing the broader context
+of your work, then narrow the focus to your specific research question.
+Provide a brief overview of your approach and convince the reader that your
+work is both necessary and well motivated \cite{brown2020}.>>>
+
+
+% ════════════════════════════════════════════════════════════════════════════
+%  SECTION 2: RELATED WORK
+% ════════════════════════════════════════════════════════════════════════════
+\section{Related Work}
+\label{sec:related-work}
+
+\begin{guidancebox}
+\textbf{Purpose:} Position your research within the existing body of
+knowledge. This section is \emph{not} a literature dump. It should present
+a structured argument for why your research is necessary. Every paper you
+cite should help build that argument.
+
+\textbf{What to include:}
+\begin{itemize}[leftmargin=*, nosep]
+  \item Prior approaches to your problem or similar problems.
+  \item Key results and findings from the literature.
+  \item Theoretical foundations your work builds upon.
+  \item Gaps in the literature that your work addresses.
+\end{itemize}
+
+\textbf{How to structure:}
+\begin{itemize}[leftmargin=*, nosep]
+  \item Group the literature by \textbf{theme or method}, not chronologically.
+  \item \textbf{Relate each cited work} to your own research question.
+    Do not simply summarise it; explain why it matters.
+  \item Move from the \textbf{broader context to the specific gap} that your work fills.
+  \item End by clearly stating how your work \textbf{extends or differs}
+    from prior research.
+\end{itemize}
+
+\textbf{Pitfalls:}
+\begin{itemize}[leftmargin=*, nosep]
+  \item Listing papers without connecting them to your work.
+  \item Summarising the literature without critical analysis or comparison.
+  \item Writing literature overviews that summarise a large amount of prior
+    work without clearly relating it to the author's own study.
+  \item Relying only on textbooks or secondary sources.
+  \item Overlooking recent publications (last 1--2 years).
+\end{itemize}
+
+\textbf{Test:} After reading this section, the reader should be able to explain
+(a)~what has already been tried, (b)~what worked and what did not, and
+(c)~exactly which gap your thesis fills.
+
+\textbf{Delete this box before submission.}
+\end{guidancebox}
+
+\noindent
+<<<Write your related work here. Group the literature thematically, relate
+each reference to your research question, and clearly articulate the gap
+your work addresses \cite{dawkins1976,brown2020}.>>>
+
+
+% ════════════════════════════════════════════════════════════════════════════
+%  SECTION 3: METHODOLOGY
+% ════════════════════════════════════════════════════════════════════════════
+\section{Methodology}
+\label{sec:methods}
+
+\begin{guidancebox}
+\textbf{Golden rule:} The description must focus on \textbf{reproducibility}.
+A reader should be able to replicate your work on the basis of this section alone.
+For a computer program, sufficient detail must be provided to allow the
+implementation to be repeated. For an experiment, sufficient detail must
+be given to allow the procedure to be reproduced accurately.
+
+\textbf{Three pillars:}
+\begin{enumerate}[leftmargin=*, nosep]
+  \item \textbf{Describe what, not how}: explain the system above the
+    source-code level. Describe what each component does, rather than how
+    it was programmed. A good approach is to first describe how the system
+    works as a whole, and then discuss the individual components.
+    Substantiate the description with formulae and pseudo code.
+  \item \textbf{Justify your choices}: in many cases, aspects of your
+    system can be implemented in different ways. Explain why you selected
+    a particular method \emph{and why you rejected the alternatives}.
+    Place these choices in the broader context of your research question.
+    Describing the system involves more than simply stating what you built.
+  \item \textbf{Include your analysis plan}: the method section should
+    also describe the techniques used to \emph{analyse} the results.
+    Define the evaluation metrics, describe how raw data were collected,
+    averaged, and processed, and name the statistical tests used while
+    justifying their validity.
+\end{enumerate}
+
+\textbf{Important:} Present all parameters in a central table (see
+Table~\ref{tab:parameters}). The reader should never have to search for a
+value buried in the prose.
+
+\textbf{Delete this box before submission.}
+\end{guidancebox}
+
+\noindent
+<<<Describe your methodology here. Start with a general overview, then
+describe the individual components. Justify every design decision and
+include your full analysis plan \cite{devlin2019}.>>>
+
+% ── Example: parameter table ─────────────────────────────────────────────
+\begin{table}[t]
+  \caption{System parameters.}
+  \label{tab:parameters}
+  \centering
+  \small
+  \begin{tabular}{@{}ll@{}}
+    \toprule
+    \textbf{Parameter}      & \textbf{Value} \\
+    \midrule
+    Learning rate            & <<<0.001>>>    \\
+    Batch size               & <<<32>>>       \\
+    Hidden dimensions        & <<<256>>>      \\
+    Number of epochs         & <<<50>>>       \\
+    Dropout rate             & <<<0.3>>>      \\
+    Optimizer                & <<<Adam>>>     \\
+    <<<\ldots>>>             & <<<\ldots>>>   \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+% ── Example: algorithm ───────────────────────────────────────────────────
+% Pseudo code: 9pt, set apart from the main text. Variables in italics,
+% control words (if, then, while) in boldface, function names (Sort,
+% FindShortest) in small caps. Line numbers required if referencing
+% specific lines. Blocks are indented and closed with end for / end while.
+% Caption ABOVE: "Algorithm X.Y: description" in 9pt bold.
+% In-text: "see Algorithm~\ref{alg:example}".
+\begin{algorithm}[t]
+  \caption{<<<Name of your algorithm>>>}
+  \label{alg:example}
+  \KwIn{<<<Input description>>>}
+  \KwOut{<<<Output description>>>}
+  <<<Replace with your algorithm in pseudo code>>>\;
+  \For{<<<each item in dataset>>>}{
+    <<<Process item>>>\;
+    \If{<<<condition>>>}{
+      <<<Update model>>>\;
+    }
+  }
+  \Return{<<<result>>>}\;
+\end{algorithm}
+
+
+% ════════════════════════════════════════════════════════════════════════════
+%  SECTION 4: RESULTS
+% ════════════════════════════════════════════════════════════════════════════
+\section{Results}
+\label{sec:results}
+
+\begin{guidancebox}
+\textbf{Purpose:} Present the essence of your message: what you
+discovered and how your findings shed light on the research question.
+Two things are especially important: \textbf{selection} and \textbf{presentation}.
+
+\textbf{Selection:} Present results that answer your research question.
+If a result does not strengthen your argument, you may leave it out.
+
+\textbf{Presentation format:}
+\begin{itemize}[leftmargin=*, nosep]
+  \item \textbf{Line graphs} for time series or continuous relationships.
+  \item \textbf{Bar charts} for categorical comparisons.
+  \item \textbf{Tables} when precise numerical values matter.
+  \item \textbf{Prose} when qualitative interpretation is the main point.
+\end{itemize}
+
+\textbf{Statistical significance:}
+\begin{itemize}[leftmargin=*, nosep]
+  \item Graphs: use error bars, box plots, or confidence intervals to
+    show variability.
+  \item Tables: include standard deviations, confidence intervals, and
+    p-values.
+  \item Text: name the statistical tests (t-test, ANOVA, Wilcoxon, etc.)
+    and justify their validity.
+\end{itemize}
+
+\textbf{Caution:} Do not confuse significance with relevance. A
+statistically significant result can still be practically irrelevant.
+
+\textbf{Delete this box before submission.}
+\end{guidancebox}
+
+\noindent
+<<<Present your results here. Select only findings that are relevant to
+your research question and present them in the most appropriate format.
+Always include measures of statistical significance.>>>
+
+% ── Example: results table ───────────────────────────────────────────────
+% Tables: 9pt font, with rows/columns separated by single half-point lines.
+% Labels in bold. Numbers centred or aligned on the decimal point.
+% Caption ABOVE: "Table X.Y: description" in 9pt bold.
+% In-text: "see Table~\ref{tab:results}".
+\begin{table}[t]
+  \caption{<<<Description of your results table.>>>}
+  \label{tab:results}
+  \centering
+  \small
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+    \textbf{Model}  & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
+    \midrule
+    Baseline         & <<<0.72>>>         & <<<0.68>>>      & <<<0.70>>>  \\
+    Your model       & <<<0.85>>>         & <<<0.81>>>      & <<<0.83>>>  \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+% ── Example: figure ──────────────────────────────────────────────────────
+% Figures: use vector graphics (PDF, EPS) for diagrams. Bitmaps (PNG, JPG)
+% ONLY for photographs, and only if the resolution is high enough that
+% there is no visible quality loss.
+% Graphs: use clear axes with marked values, indicate what they show,
+% and include units where relevant. If multiple items are shown, include a legend.
+% All elements must remain clearly distinguishable even in BLACK AND WHITE.
+% Include reliability intervals or other indicators of variation.
+% Figures may be one or two columns wide and should be placed within the margins.
+% Caption BELOW: "Figure X.Y: description" in 9pt bold. Leave 6pt below the caption.
+% In-text: "see Figure~\ref{fig:example}".
+%
+% \begin{figure}[t]
+%   \centering
+%   \includegraphics[width=\columnwidth]{figures/<<<your_figure>>>}
+%   \caption{<<<Description. Ensure that axes and labels are clearly legible.>>>}
+%   \label{fig:example}
+% \end{figure}
+
+
+% ════════════════════════════════════════════════════════════════════════════
+%  SECTION 5: DISCUSSION
+% ════════════════════════════════════════════════════════════════════════════
+\section{Discussion}
+\label{sec:discussion}
+
+\begin{guidancebox}
+\textbf{Purpose:} Describe the implications of your findings in the
+context of your research question. Guide the reader through the results by
+explaining how each finding relates to the research question and to prior
+work in the field. This discussion should build the argument for a short
+and, ideally, powerful final conclusion.
+
+\textbf{What to cover:}
+\begin{itemize}[leftmargin=*, nosep]
+  \item \textbf{Interpretation:} explain how each result relates to your
+    research question and guide the reader through that interpretation.
+  \item \textbf{Comparison with related work:} do your findings align with,
+    contradict, or extend prior results? Link back to
+    Section~\ref{sec:related-work}.
+  \item \textbf{Broader context:} place your conclusions in the wider
+    academic context of the field.
+  \item \textbf{Practical implications:} what do your findings mean for
+    practitioners?
+  \item \textbf{Future research:} suggest concrete future research
+    directions that follow from your findings.
+\end{itemize}
+
+\textbf{Limitations \& pitfalls:}
+\begin{itemize}[leftmargin=*, nosep]
+  \item Acknowledge limitations honestly; reviewers will identify them anyway.
+  \item Discuss threats to validity (internal, external, construct).
+  \item Do not assume that adding complexity is the default solution;
+    simplification may sometimes be more effective.
+  \item Do not confuse statistical significance with practical relevance.
+  \item Future work should follow from your analysis, not read like a wish list.
+\end{itemize}
+
+\textbf{Delete this box before submission.}
+\end{guidancebox}
+
+\noindent
+<<<Interpret your results here. Explain what they mean for the research
+question, compare them with related work, acknowledge limitations honestly,
+and suggest concrete directions for future research \cite{vaswani2017}.>>>
+
+
+% ════════════════════════════════════════════════════════════════════════════
+%  SECTION 6: CONCLUSION
+% ════════════════════════════════════════════════════════════════════════════
+\section{Conclusion}
+\label{sec:conclusion}
+
+\begin{guidancebox}
+\textbf{Purpose:} The introduction and conclusion together should form a
+\emph{mini-article} that can be read on its own. Include all of your key
+findings in this section. There is no need to repeat graphs and tables,
+but it is essential to summarise your findings in words.
+
+\textbf{Must include:}
+\begin{itemize}[leftmargin=*, nosep]
+  \item \textbf{Summarize key findings in words}: the reader should
+    understand your results without needing to read the full thesis.
+  \item \textbf{Directly answer the research question} introduced earlier.
+    This is the single most important paragraph.
+  \item \textbf{Briefly restate your approach} so that the conclusion can
+    stand on its own.
+  \item \textbf{Connect back to related work}: does your study confirm,
+    extend, or contradict prior research?
+  \item \textbf{Be concise}: state each conclusion clearly and separately.
+\end{itemize}
+
+\textbf{Self-test:} Give someone only your Introduction and Conclusion.
+If they can explain what you did, why you did it, what you found, and what
+it means, then your thesis structure is working well.
+
+\textbf{Delete this box before submission.}
+\end{guidancebox}
+
+\noindent
+<<<Write your conclusion here. Summarize your findings, directly answer your
+research question, and connect your conclusions back to the broader context
+established in the introduction.>>>
+
+
+% ════════════════════════════════════════════════════════════════════════════
+%  ACADEMIC WRITING STYLE GUIDANCE
+% ════════════════════════════════════════════════════════════════════════════
+% This box appears between the conclusion and references. It contains
+% guidance only — delete it entirely before submission.
+
+\begin{stylenote}[title={Academic Writing Style Guide — Delete before submission}]
+
+\textbf{DO:}
+\begin{itemize}[leftmargin=*, nosep]
+  \item Use impersonal constructions or passive voice where appropriate.
+  \item ``This study aimed to test\ldots'' rather than ``I wanted to see\ldots''
+  \item Substantiate every claim with references or data.
+  \item Build paragraphs: topic sentence $\rightarrow$ detail $\rightarrow$ transition.
+  \item Ask a peer to read and critique your draft.
+  \item Read published papers in your field to learn the conventions.
+\end{itemize}
+
+\textbf{DON'T:}
+\begin{itemize}[leftmargin=*, nosep]
+  \item Overuse first-person pronouns. Avoid ``we'' in a single-author thesis.
+  \item Make vague generalizations such as ``Many researchers believe\ldots''.
+    Cite them or remove them.
+  \item Use overly formal language that reduces readability.
+  \item Include material that does not serve your main message.
+  \item Use Wikipedia as a primary source. Use it only to locate proper sources.
+\end{itemize}
+
+\medskip
+\textbf{Detailed guidance below:}
+
+\textbf{The academic style.}
+Academic writing generally avoids first- and second-person pronouns
+(I, you, we). Use impersonal constructions or passive voice where appropriate.
+Write ``this study aimed to test\ldots'' rather than ``I wanted to see\ldots''.
+In a single-author thesis, ``we'' is usually inappropriate rather than helpful.
+
+\textbf{Paragraph construction.}
+A paragraph should focus on one main subject, or link two closely related ones.
+The first sentence introduces the topic; the final sentence provides a transition
+to the next paragraph; the middle sentences provide the supporting detail.
+If you cannot answer ``Is this relevant to my message?'' positively, leave it out.
+If you cannot answer ``Will my readers understand this?'' positively, explain it in more detail.
+
+\textbf{Substantiate claims.}
+Vague generalizations such as ``The interest in X is rapidly increasing'' or
+``Many scientists believe that\ldots'' should be avoided unless they are
+properly substantiated with references.
+
+\textbf{Get feedback.}
+Writers are often the least critical readers of their own work. Ask someone
+else to read your text and take their comments seriously. If \emph{you}
+already think something is weak, it is very likely to be weak.
+
+\textbf{Numbers and notation.}
+Use modified American notation: points for decimals (1.5, not 1,5).
+Scientific notation for large numbers: $6.022 \times 10^{23}$.
+Use spaces to group digits: 4\,294\,967\,296. Do not allow line breaks in
+the middle of formulae or between a number and its unit (e.g., 6\,cm).
+
+\textbf{Formulae.}
+Use standard mathematical notation. Explain all symbols clearly. Formulae
+should be left-aligned and their numbers right-aligned (e.g., Equation~4.1).
+Use the same font as in the main text.
+
+\textbf{Italics.}
+Use italics for words from other languages (except commonplace terms),
+Latin abbreviations, new terminology, emphasis, and short quotations.
+Never underline.
+
+\textbf{Dashes.}
+Hyphen (-): joins words or separates syllables.
+En-dash (--): minus sign, number ranges ($-1$, 2--5).
+Em-dash (---): pause or parenthetical.
+
+\textbf{Quotation marks.}
+Use proper opening and closing marks: `correct' and ``also correct''.
+Not 'wrong' or "wrong again".
+
+\textbf{Spelling.}
+Use a spelling checker. Check that accents and special characters are
+correct. Verify hyphenation, as LaTeX may occasionally make mistakes.
+
+\textbf{Read widely.}
+One of the most useful ways to improve your writing is to read many
+academic articles and observe what works and what does not. A good article
+will always remain a good article, and a bad one will remain a bad one.
+Reading both helps you understand why certain writing choices are effective.
+
+\textbf{Delete this entire box before submission.}
+\end{stylenote}
+
+
+% ════════════════════════════════════════════════════════════════════════════
+%  REFERENCES
+% ════════════════════════════════════════════════════════════════════════════
+% APA style. In-text citation patterns:
+%   One author:        \citep{dawkins1976}            → (Dawkins, 1976)
+%   Two authors:       \citep{berrah1999}             → (Berrah & Laboissière, 1999)
+%   Three or more:     \citep{schwartz1997}           → (Schwartz et al., 1997)
+%   Multiple sources:  \citep{cooper1952,crothers1975} → (Cooper et al., 1952; Crothers, 1975)
+%   Same author, multi-year: \citep{kirby1998,kirby1999,kirby2000}
+%   Secondary source:  (Schwartz et al., 1997, as cited in Berrah & Laboissière, 1999)
+%     — list both in the bibliography.
+%   Narrative:         \citet{dawkins1976}            → Dawkins (1976)
+%
+% WHEN TO REFERENCE:
+%   - Whenever you use other people's ideas, text, or illustrations.
+%   - When describing system choices (must be based on what others tried).
+%   - In the introduction: similar work, without interrupting the flow.
+%   - In the conclusion: similar conclusions by fellow researchers.
+%
+% WHICH SOURCE?
+%   - Refer to both the original discoverer AND the clearer textbook.
+%   - Better to over-reference than under-reference.
+%   - If you haven't read the original, be open:
+%     (Schwartz et al., 1997, as cited in Berrah & Laboissière, 1999)
+%   - Avoid vague, hard-to-find, in-press, or online-only sources.
+%
+% The bibliography must include: author, year, title, publisher/journal,
+% and issue number. Use APA conventions (or another style approved by
+% your supervisor beforehand).
+
+\newpage
+\onecolumn
+\bibliographystyle{apalike}
+\bibliography{references}
+
+% ── Fallback: manual bibliography (uncomment if no .bib file) ───────────
+% \begin{thebibliography}{99}
+%
+%   \bibitem[Dawkins(1976)]{dawkins1976}
+%     Dawkins, R. (1976). \textit{The Selfish Gene}. Oxford University Press.
+%
+%   \bibitem[Vaswani et~al.(2017)]{vaswani2017}
+%     Vaswani, A., Shazeer, N., Parmar, N., et~al. (2017).
+%     Attention is all you need.
+%     \textit{Advances in Neural Information Processing Systems}, 30.
+%
+%   \bibitem[Devlin et~al.(2019)]{devlin2019}
+%     Devlin, J., Chang, M.-W., Lee, K., \& Toutanova, K. (2019).
+%     {BERT}: Pre-training of deep bidirectional transformers for language
+%     understanding. \textit{Proceedings of NAACL-HLT}, 4171--4186.
+%
+% \end{thebibliography}
+
+
+% ════════════════════════════════════════════════════════════════════════════
+%  APPENDICES
+% ════════════════════════════════════════════════════════════════════════════
+% Appendices are NOT counted towards the 10–15 page limit.
+% Use letters (A, B, C) to number them. You may use single-column layout.
+% Start the first appendix on a new page.
+% If you have many appendices, provide a list on the first page.
+
+\newpage
+\onecolumn  % Optional: single-column layout for appendices
+
+\appendix
+
+\section{<<<Title of First Appendix>>>}
+\label{app:first}
+
+<<<Include supplementary material here: extended tables, additional
+figures, code listings, detailed derivations, or other material that
+did not fit in the main text but supports reproducibility. If you
+have many appendices, provide a list at the beginning.>>>
+
+% Uncomment for additional appendices:
+% \section{<<<Title of Second Appendix>>>}
+% \label{app:second}
+% <<<Additional supplementary material.>>>
+
+
+\end{document}

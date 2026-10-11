@@ -1,0 +1,9 @@
+path: C:\Users\vl4di\OneDrive - BUas\GitHub\Vladislav_Stoimenov_Graduation_Project_25_26\data
+train: manual_finetune_split/train/images
+val: manual_finetune_split/val/images
+test: manual_split/test/images
+names:
+  0: D00_Longitudinal_Crack
+  1: D10_Transverse_Crack
+  2: D20_Alligator_Crack
+  3: D40_Pothole

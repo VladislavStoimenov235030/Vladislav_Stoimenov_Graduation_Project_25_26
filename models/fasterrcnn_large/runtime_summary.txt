@@ -1,0 +1,7 @@
+epochs_run=22
+epochs_max=100
+patience=20
+total_wall_clock_hours=4.1642
+mean_epoch_seconds=681.12
+effective_batch_size=16
+train_images=4291
