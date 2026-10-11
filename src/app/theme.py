@@ -206,10 +206,27 @@ def inject_custom_css() -> None:
         .stButton > button[kind="primary"] {{
             background: var(--blue-600);
             border-color: var(--blue-600);
+            color: #FFFFFF;
+        }}
+        /* The button label is rendered as its own paragraph element inside
+           the button (Streamlit runs button labels through its markdown
+           renderer), and the general paragraph color rule earlier above
+           targets that element directly -- a direct rule on a child always
+           wins over an inherited color from the parent, no matter how
+           specific the parent's rule is. So the button's own white text
+           color above is not enough by itself; it has to be repeated here,
+           scoped to text inside a primary button specifically, to beat
+           that more general rule. */
+        .stButton > button[kind="primary"] p {{
+            color: #FFFFFF;
         }}
         .stButton > button[kind="primary"]:hover {{
             background: var(--navy-800);
             border-color: var(--navy-800);
+            color: #FFFFFF;
+        }}
+        .stButton > button[kind="primary"]:hover p {{
+            color: #FFFFFF;
         }}
         .stButton > button:hover {{
             border-color: var(--blue-500);
